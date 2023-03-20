@@ -18,8 +18,7 @@ api.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET')
 jwt = JWTManager(app)
 
 
-# Create a route to authenticate your users and return JWTs. The
-# create_access_token() function is used to actually generate the JWT.
+# Create a route to authenticate your users and return JWTs. The create_access_token() function is used to actually generate the JWT.
 @app.route("/token", methods=["POST"])
 def create_token():
     email = request.json.get("email", None)
