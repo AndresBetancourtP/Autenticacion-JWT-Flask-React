@@ -1,6 +1,7 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
+			token: null,
 			message: null,
 			demo: [
 				{
@@ -20,6 +21,55 @@ const getState = ({ getStore, getActions, setStore }) => {
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
+
+			syncTokenFromSessionStore: ()=>{
+				const token = sessionStorage.getItem("token");
+				console.log("aplication just loaded, synching the session storage token")
+				if (token && token !="" && token !=undefined)setStore({token: token});
+			},
+
+			logout: ()=>{
+				sessionStorage.removeItem("token");
+				console.log("login out")
+				setStore({token: null});
+			},
+
+			login: async (email,password)=>{
+
+			const opts = {
+				method:'POST',
+				headers:{
+					"Content-type":"application/json"
+				},
+				body:JSON.stringify(
+					{
+						"email":email,
+						"password":password
+					  }
+				)
+			}
+
+			try {
+			const resp = await fetch(process.env.BACKEND_URL + "/api/token", opts)
+			if (resp.status !== 200){
+				alert("Aquí ha habido algún error");
+				return false;
+			} 
+			
+			const data = await resp.json();
+			console.log("this came from the backend", data);
+			sessionStorage.setItem("token", data.access_token);
+			setStore({token: data.access_token});
+			
+			return true;
+		}
+		catch(error){
+			console.error("Ha habido un error en el login")
+		}
+	},
+		
+			
+			
 
 			getMessage: async () => {
 				try{

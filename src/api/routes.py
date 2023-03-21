@@ -9,18 +9,23 @@ from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 
-#Crear una aplicacion flask
+#Aqui se crea la aplicacion flask
 api = Blueprint('api', __name__)
 
-# Create a route to authenticate your users and return JWTs. The 
-# create_access_token() function iss used to actually  generate the JWT.
-@api.route("/token", methods=["POST"])
+
+@api.route('/token', methods=['POST'])
 def create_token():
-    email = request.json.get("email", None)
-    password = request.json.get("password", None)
+    email = request.json.get("email",None)
+    password = request.json.get("password",None)
     if email != "test" or password != "test":
         return jsonify({"msg": "Bad username or password"}), 401
 
     access_token = create_access_token(identity=email)
-    return jsonify({access_token: "access_token"})
+    return jsonify(access_token=access_token)
 
+
+    response_body = {
+        "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
+    }
+
+    return jsonify(response_body), 200
