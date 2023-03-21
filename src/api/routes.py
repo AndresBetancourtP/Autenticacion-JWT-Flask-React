@@ -9,7 +9,7 @@ from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 
-#Aqui se crea la aplicacion flask
+#Aqui se crea la aplicacion flaskk
 api = Blueprint('api', __name__)
 
 
